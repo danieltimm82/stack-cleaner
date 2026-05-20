@@ -9,6 +9,6 @@ describe('Stack Cleaner CLI Basic Integration Tests', () => {
   it('should contain the core infrastructure commands', () => {
     const output = execSync('ts-node src/index.ts --help').toString();
     expect(output).toContain('inspect');
-    expect(output).toContain('prune');
+    expect(output).toContain('clean');
   });
 });
