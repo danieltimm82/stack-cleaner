@@ -1,4 +1,4 @@
-# stack-cleaner 🧹
+# stack-cleaner
 
 A production-grade, lightweight CLI tool designed to optimize, prune, and safely clean up local development environments clutter (Docker containers, bloated package manager caches, and system logs).
 
