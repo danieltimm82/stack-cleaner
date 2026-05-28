@@ -1,6 +1,6 @@
 {
   "name": "stack-cleaner",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A production-grade CLI tool to optimize, prune, and clean up local development environments.",
   "main": "dist/index.js",
   "bin": {
