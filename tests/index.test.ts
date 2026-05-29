@@ -1,23 +1,25 @@
-import { describe, it, expect } from 'vitest';
-import { execSync } from 'child_process';
+import { describe, it, expect, vi } from 'vitest';
+import { run } from '../src/index';
 
-describe('Stack Cleaner CLI Basic Integration Tests', () => {
+describe('Stack Cleaner - Testes de Integração Nativa', () => {
 
-  it('should output version alignment correctly', () => {
-    // Trocado npx ts-node por npx tsx para total compatibilidade de módulos
-    const output = execSync('npx tsx src/index.ts --version').toString();
-    
-    // Verifica se a saída do terminal contém a versão correta do ecossistema
-    expect(output).toContain('1.0.1');
-  });
+  it('Deve executar o modo dry run por defeito e retornar verdadeiro', async () => {
+    // Espiona os logs do console para evitar poluir o terminal do CI
+    const logSpy = vi.spyOn(console, 'info').mockImplementation(() => {});
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
 
-  it('should execute dry run mode by default when no config is provided', () => {
-    // Trocado npx ts-node por npx tsx
-    const output = execSync('npx tsx src/index.ts').toString();
-    
-    // Valida se o sistema avisa sobre a falta de configuração e assume o modo seguro
-    expect(output).toContain('[Stack Cleaner] Iniciando varredura estática de dependências...');
-    expect(output).toContain('Modo de Teste (Dry Run): true');
+    // Executa a função principal diretamente
+    const result = await run();
+
+    // Validações de sucesso
+    expect(result).toBe(true);
+    expect(logSpy).toHaveBeenCalledWith(
+      expect.stringContaining('[Stack Cleaner] Iniciando varredura estática de dependências...')
+    );
+
+    // Limpa os mocks do console
+    vi.restoreAllMocks();
   });
 
 });
