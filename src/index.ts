@@ -45,5 +45,6 @@ async function executeCleanProcess(config: CleanerConfig): Promise<boolean> {
     console.warn("[Stack Cleaner] Aviso: package.json não detetado no diretório atual.");
   }
 
+  // Garante o retorno booleano positivo para o fluxo de execução bem-sucedido
   return true;
 }
