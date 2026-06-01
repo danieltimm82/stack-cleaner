@@ -11,7 +11,7 @@ Every developer knows the pain: your hard drive is quietly suffocated by gigabyt
 
 `stack-cleaner` is a lightweight, blazing-fast CLI tool built in TypeScript that surgically scans your development directories, calculates exactly how much space is being wasted, and purges it safely.
 
----
+----------------------
 
 ## Quick Start
 
