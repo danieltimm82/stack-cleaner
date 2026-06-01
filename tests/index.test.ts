@@ -1,12 +1,22 @@
 // @vitest-environment node
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { run } from '../src/index';
+import fs from 'fs';
 
-describe('Stack Cleaner - Testes de Integração Nativa', () => {
+describe('Stack Cleaner - Core Engine Integration', () => {
 
-  it('Deve executar o modo dry run por defeito e retornar verdadeiro', async () => {
+  it('Should safely complete a dry run scanning execution', async () => {
+    // Intercepta os logs para não poluir o terminal de CI
+    vi.spyOn(console, 'info').mockImplementation(() => {});
+    vi.spyOn(console, 'log').mockImplementation(() => {});
+    vi.spyOn(console, 'warn').mockImplementation(() => {});
+
     const result = await run();
+    
+    // O motor precisa retornar true indicando que o ciclo de varredura fechou sem estourar exceções
     expect(result).toBe(true);
+
+    vi.restoreAllMocks();
   });
 
 });
