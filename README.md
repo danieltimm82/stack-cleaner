@@ -13,16 +13,11 @@ Every developer knows the pain: your hard drive is quietly suffocated by gigabyt
 
 ---
 
-## Real Performance Impact
+## Quick Start
 
-```text
-stack-cleaner v1.0.1 — Smart Workspace Optimization [Command: CLEAN]
------------------------------------------------------------------------------------------
-[Purged] /Users/dev/projects/old-ecommerce/node_modules (~814.2 MB)
-[Purged] /Users/dev/projects/test-api/.next (~342.1 MB)
-[Purged] /Users/dev/workspace/sandbox/.turbo (~189.5 MB)
------------------------------------------------------------------------------------------
-[SUCCESS] Cleanup finished in 4.12s!
-Removed 32 folders successfully.
-Safeguarded 14 active projects.
-Total space recovered: 24.83 GB
+```bash
+# 1. Scan your workspace recursively to calculate potential space savings
+npx stack-cleaner scan
+
+# 2. Purge the detected clutter and instantly recover your disk space
+npx stack-cleaner clean
