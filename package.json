@@ -4,6 +4,9 @@
   "description": "Uma ferramenta robusta para análise e otimização de dependências em ecossistemas de desenvolvimento.",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "bin": {
+    "stack-cleaner": "./dist/index.js"
+  },
   "scripts": {
     "test": "vitest run",
     "build": "tsc",
