@@ -1,18 +1,14 @@
 # stack-cleaner
 
-A production-grade, lightweight CLI tool designed to optimize, clean, and safely manage local development environments clutter (Docker containers, bloated package manager caches, and system logs).
+A command-line tool (CLI) designed to analyze, map, and optimize local development environments. If you work with multiple repositories and constantly run out of disk space or face sluggish builds due to accumulated clutter (`orphaned node_modules`, heavy framework caches like `.next` or `.vite`), stack-cleaner tackles this surgically and safely.
 
-[![CI Status](https://github.com/danieltimm82/stack-cleaner/actions/workflows/ci.yml/badge.svg)](https://github.com/danieltimm82/stack-cleaner/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node version](https://img.shields.io/badge/node-%3E%3D18.0.0-blue.svg)](https://nodejs.org)
+The main difference here is that it doesn't blindly delete your work. It performs a structured static scan, strictly respecting your custom configuration rules.
 
-## Features
+---
 
-- ****Inspect****: Deep scan of local development storage leaks.
-- ****Clean****: Safe and automated eviction of orphaned Docker volumes and volatile global caches.
-- ****Fast & Safe****: Built with TypeScript for reliable system-level execution.
+## Quick Start
 
-## Installation
+You don't need to install anything globally. Run it directly using `npx`:
 
 ```bash
-npm install -g stack-cleaner
+npx stack-cleaner
