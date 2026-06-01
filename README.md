@@ -1,4 +1,4 @@
-# stack-cleaner
+# Stack-cleaner
 
 [![Node.js CI](https://github.com/danieltimm82/stack-cleaner/actions/workflows/ci.yml/badge.svg)](https://github.com/danieltimm82/stack-cleaner/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
@@ -21,19 +21,19 @@ npx stack-cleaner scan
 
 # 2. Purge the detected clutter and instantly recover your disk space
 npx stack-cleaner clean
------------------------------------------------------------------------------------------
+-----------------------
 Real Performance Impact
 stack-cleaner v1.0.1 — Smart Workspace Optimization [Command: CLEAN]
------------------------------------------------------------------------------------------
+-----------------------
 ✔ [Purged] /Users/dev/projects/old-ecommerce/node_modules (~814.2 MB)
 ✔ [Purged] /Users/dev/projects/test-api/.next (~342.1 MB)
 ✔ [Purged] /Users/dev/workspace/sandbox/.turbo (~189.5 MB)
------------------------------------------------------------------------------------------
+-----------------------
 [SUCCESS] Cleanup finished in 4.12s!
 Removed 32 folders successfully.
 Safeguarded 14 active projects.
 Total space recovered: 24.83 GB
-------------------------------------------------------------------------------------------
+-----------------------
 Features That Set Us Apart
 - Smart Active Project Exclusion: stack-cleaner automatically tracks file modification timestamps. By default, it skips any project or folder that has been modified within the last 7 days, ensuring your active workspaces are left completely untouched.
 
@@ -47,7 +47,7 @@ Features That Set Us Apart
   "gracePeriodDays": 7,
   "dryRun": true
 }
---------------------------------------------------------------------------------------------
+--------------------
 Local Development
 Setting up the repository locally to extend the scanning engine takes less than a minute:
 
@@ -74,7 +74,7 @@ npm run build
 [ ] **Interactive Terminal UI:** Add an interactive checkbox layout to choose exactly which folders to drop.
 [ ] **Docker Cache Targets:** Prune dangling docker containers, anonymous volumes, and builder layers alongside node directory scans.
 
----
+--------------------
 
 ## Leave a Star!
 
