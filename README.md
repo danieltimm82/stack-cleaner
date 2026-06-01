@@ -11,7 +11,7 @@ Every developer knows the pain: your hard drive is quietly suffocated by gigabyt
 
 `stack-cleaner` is a lightweight, blazing-fast CLI tool built in TypeScript that surgically scans your development directories, calculates exactly how much space is being wasted, and purges it safely.
 
-----------------------
+-----------------------
 
 ## Quick Start
 
@@ -47,35 +47,30 @@ Features That Set Us Apart
   "gracePeriodDays": 7,
   "dryRun": true
 }
---------------------
+-----------------------
 Local Development
 Setting up the repository locally to extend the scanning engine takes less than a minute:
 
 1. *Clone & Enter:
-
 Bash
 git clone [https://github.com/danieltimm82/stack-cleaner.git](https://github.com/danieltimm82/stack-cleaner.git)
 cd stack-cleaner
 
 2. **Install & Test:**
-
 Bash
 npm install
 npm test
 
 3. *** Build Target:
-
 Bash
 npm run build
----
-
+-----------------------
 ## Engineering Roadmap
 
 [ ] **Interactive Terminal UI:** Add an interactive checkbox layout to choose exactly which folders to drop.
 [ ] **Docker Cache Targets:** Prune dangling docker containers, anonymous volumes, and builder layers alongside node directory scans.
 
---------------------
-
+-----------------------
 ## Leave a Star!
 
 If this project helped you recover disk space, please **leave a star on this repository**. It costs nothing, boosts our open-source search ranking, and drives active development!
