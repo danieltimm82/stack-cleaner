@@ -3,7 +3,7 @@ import path from 'path';
 
 interface CleanerConfig {
   excludeFolders?: string[];
-  includeExtensions?: string[];
+  targetFolders?: string[];
   dryRun?: boolean;
 }
 
@@ -13,40 +13,67 @@ interface ScanResult {
 }
 
 export async function run(configPath?: string): Promise<boolean> {
-  console.info("[Stack Cleaner] Starting static dependency and workspace scan...");
+  const args = process.argv.slice(2);
+  const command = args[0] || 'scan'; // 'scan' é o padrão
 
-  try {
-    const targetConfig = configPath || path.join(process.cwd(), 'stack-cleaner.json');
-    let config: CleanerConfig = { dryRun: true, excludeFolders: ['node_modules', '.git', 'dist'] };
+  // Configurações padrão agressivas para capturar o lixo real dos devs
+  let config: CleanerConfig = { 
+    dryRun: command !== 'clean', 
+    excludeFolders: ['.git', '.github', '.vscode'],
+    targetFolders: ['node_modules', '.cache', 'dist', 'build', '.next', '.turbo', '.vite']
+  };
 
-    if (fs.existsSync(targetConfig)) {
+  const targetConfig = configPath || path.join(process.cwd(), 'stack-cleaner.json');
+  if (fs.existsSync(targetConfig)) {
+    try {
       const configRaw = fs.readFileSync(targetConfig, 'utf-8');
       if (configRaw.trim()) {
-        config = JSON.parse(configRaw);
+        config = { ...config, ...JSON.parse(configRaw) };
       }
-    } else {
-      console.warn(`[Stack Cleaner] Warning: Configuration file not found. Using safe defaults.`);
+    } catch {
+      console.warn(`[stack-cleaner] Warning: Failed to parse stack-cleaner.json. Using defaults.`);
     }
+  }
 
+  // Sobrescreve o dryRun baseado no comando explícito do terminal
+  if (command === 'clean') {
+    config.dryRun = false;
+  }
+
+  console.info(`\n⚡ stack-cleaner v1.0.1 — Initiating smart environment optimization [Command: ${command.toUpperCase()}]`);
+  console.info(`-----------------------------------------------------------------------------------------`);
+
+  try {
+    const startTime = Date.now();
     const result = await executeCleanProcess(config);
-    
-    if (config.dryRun !== false) {
-      console.info(`\n[Stack Cleaner] [DRY RUN DONE] Scan complete. Found ${result.deletedPaths.length} targets. Potential space to free: ${(result.bytesFreed / (1024 * 1024)).toFixed(2)} MB.`);
-      console.info("[Stack Cleaner] Run with 'dryRun: false' in your config to execute the actual cleanup.");
+    const duration = ((Date.now() - startTime) / 1000).toFixed(2);
+    const sizeInMB = (result.bytesFreed / (1024 * 1024)).toFixed(2);
+    const sizeInGB = (result.bytesFreed / (1024 * 1024 * 1024)).toFixed(2);
+    const finalSizeDisplay = parseFloat(sizeInGB) > 0.1 ? `${sizeInGB} GB` : `${sizeInMB} MB`;
+
+    if (config.dryRun) {
+      console.info(`-----------------------------------------------------------------------------------------`);
+      console.info(`✨ [DRY RUN DONE] Scan finished in ${duration}s.`);
+      console.info(`🔍 Found ${result.deletedPaths.length} bloated targets.`);
+      console.info(`🚀 Potential space to recover: ${finalSizeDisplay}`);
+      console.info(`\n👉 Run 'npx stack-cleaner clean' to safely purge this garbage.`);
     } else {
-      console.info(`\n[Stack Cleaner] [SUCCESS] Cleanup done! Removed ${result.deletedPaths.length} targets. Freed ${(result.bytesFreed / (1024 * 1024)).toFixed(2)} MB.`);
+      console.info(`-----------------------------------------------------------------------------------------`);
+      console.info(`💥 [SUCCESS] Cleanup finished in ${duration}s!`);
+      console.info(`✔ Removed ${result.deletedPaths.length} folders successfully.`);
+      console.info(`🎉 Total space recovered: ${finalSizeDisplay}`);
     }
 
     return true;
   } catch (error: any) {
-    console.error(`[Stack Cleaner] [Critical Error]: ${error.message}`);
+    console.error(`\n❌ [Critical Error]: ${error.message}`);
     throw error;
   }
 }
 
 async function executeCleanProcess(config: CleanerConfig): Promise<ScanResult> {
   const isDryRun = config.dryRun !== false;
-  const targetFolders = ['node_modules', '.test', '.cache', 'dist', 'build']; 
+  const targetFolders = config.targetFolders || ['node_modules', '.cache', 'dist']; 
   const excludeFolders = config.excludeFolders || ['.git'];
   
   const result: ScanResult = { deletedPaths: [], bytesFreed: 0 };
@@ -73,7 +100,7 @@ async function executeCleanProcess(config: CleanerConfig): Promise<ScanResult> {
     try {
       items = fs.readdirSync(dir);
     } catch {
-      return; // Ignora pastas sem permissão de leitura
+      return; 
     }
 
     for (const item of items) {
@@ -96,11 +123,13 @@ async function executeCleanProcess(config: CleanerConfig): Promise<ScanResult> {
           result.bytesFreed += size;
           result.deletedPaths.push(fullPath);
 
+          const sizeDisplay = (size / (1024 * 1024)).toFixed(1);
+
           if (!isDryRun) {
-            console.log(`[Cleaning] Removing: ${fullPath} (~${(size / 1024).toFixed(1)} KB)`);
+            console.log(`✔ [Purged] ${fullPath} (~${sizeDisplay} MB)`);
             fs.rmSync(fullPath, { recursive: true, force: true });
           } else {
-            console.log(`[Scan Found] ${fullPath} (~${(size / 1024).toFixed(1)} KB)`);
+            console.log(`🔍 [Found] ${fullPath} (~${sizeDisplay} MB)`);
           }
         } else {
           scan(fullPath);
