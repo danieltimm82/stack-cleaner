@@ -47,3 +47,13 @@ async function executeCleanProcess(config: CleanerConfig): Promise<boolean> {
 
   return true;
 }
+
+// Executa automaticamente apenas se o arquivo for o ponto de entrada do terminal (CLI)
+if (process.argv[1] && (process.argv[1].endsWith('index.js') || process.argv[1].endsWith('index.ts'))) {
+  const args = process.argv.slice(2);
+  if (args.includes('--version') || args.includes('-v')) {
+    console.log('1.0.1');
+    process.exit(0);
+  }
+  run().catch(() => process.exit(1));
+}
